@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class AuthorizeServiceImpl implements AuthorizeService {
 
@@ -17,6 +19,8 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    //多方默认懒加载, 在Service层加上@Transactional保持session
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null) {

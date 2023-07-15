@@ -1,10 +1,16 @@
 package com.example.springsecuritystudy.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "user")
 public class User {
@@ -23,4 +29,27 @@ public class User {
 
     @Column(name = "pass_word")
     private String password;
+
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    )
+
+    //多方默认懒加载, 在Service层加上@Transactional保持session
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @ToString.Exclude
+    private List<Role> roles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return getUid() != null && Objects.equals(getUid(), user.getUid());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

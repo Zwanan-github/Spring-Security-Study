@@ -1,10 +1,15 @@
 package com.example.springsecuritystudy.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 @Table(name = "permission")
 public class Permission {
@@ -16,4 +21,17 @@ public class Permission {
 
     @Column(name = "permission_name", unique = true)
     private String pName;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Permission that = (Permission) o;
+        return getPid() != null && Objects.equals(getPid(), that.getPid());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -34,8 +34,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeRequests()
+                // 开放首页
+                .antMatchers("/index/**").permitAll()
                 // 任何请求
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 // 登录url设置
                 .formLogin().loginProcessingUrl("/api/auth/login")

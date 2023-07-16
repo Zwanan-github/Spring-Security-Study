@@ -1,5 +1,6 @@
 package com.example.springsecuritystudy.service.Impl;
 
+import com.example.springsecuritystudy.entity.Role;
 import com.example.springsecuritystudy.repository.UserRepository;
 import com.example.springsecuritystudy.service.AuthorizeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 
 @Service
 public class AuthorizeServiceImpl implements AuthorizeService {
@@ -32,11 +34,14 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         if (null == user) {
             throw new UsernameNotFoundException("账号或密码错误");
         }
-        System.out.println(user);
+        String[] roles = user.getRoles().stream()
+                .map(Role::getRName)
+                .toArray(String[]::new);
+        System.out.println("用户{" + user + "}登录成功, 权限:{" + Arrays.toString(roles) + "}");
         return User
                 .withUsername(username)
                 .password(encoder.encode(user.getPassword()))
-                .roles()
+                .roles(roles)
                 .build();
     }
 }

@@ -1,3 +1,17 @@
 spring:
   profiles:
     active: '@environment@'
+  ## 模板
+  datasource:
+    driver-class-name:
+    url:
+    username:
+    password:
+  jpa:
+    hibernate:
+      # 数据库的初始化模式
+      ddl-auto:
+    # 默认存储引擎
+    database-platform:
+    # 在日志中打印 sql 信息
+    show-sql:

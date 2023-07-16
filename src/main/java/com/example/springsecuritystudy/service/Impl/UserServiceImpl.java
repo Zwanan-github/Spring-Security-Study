@@ -19,4 +19,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAllAdmin();
     }
 
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public int updateUserInfo(User user) {
+        return userRepository.updateUserInfo(user.getNickname(), user.getPassword(), user.getUsername());
+    }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public int deleteByUsername(String username) {
+        return userRepository.deleteByUsername(username);
+    }
+
+
 }

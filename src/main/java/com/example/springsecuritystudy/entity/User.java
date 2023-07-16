@@ -30,11 +30,13 @@ public class User {
     @Column(name = "pass_word")
     private String password;
 
+    @Column(name = "is_delete", columnDefinition = "int default 0")
+    private Integer isDelete;
+
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     )
-
     //多方默认懒加载, 在Service层加上@Transactional保持session
     @ManyToMany(cascade = CascadeType.MERGE)
     @ToString.Exclude

@@ -22,6 +22,9 @@ public class Permission {
     @Column(name = "permission_name", unique = true)
     private String pName;
 
+    @Column(name = "is_delete", columnDefinition = "int default 0")
+    private Integer isDelete;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

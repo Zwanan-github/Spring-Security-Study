@@ -23,6 +23,9 @@ public class Role {
     @Column(name = "role_name", unique = true)
     private String rName;
 
+    @Column(name = "is_delete", columnDefinition = "int default 0")
+    private Integer isDelete;
+
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "permission_id")

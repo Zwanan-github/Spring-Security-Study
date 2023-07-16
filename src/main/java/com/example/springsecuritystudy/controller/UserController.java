@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PutMapping("/info")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('user_update')")
     public Result<String> updateUserInfoByUsername(@RequestBody User user) {
         // 修改
         if (userService.updateUserInfo(user) == 1) {
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('user_add')")
     public Result<String> insertUser(@RequestBody User user) {
         // 添加默认用户
         User respUser = userService.saveUser(user);
@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{user_name}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('user_delete')")
     public Result<String> deleteByUsername(@PathVariable("user_name") String username) {
         if (userService.deleteByUsername(username) == 1) {
             return Result.success("删除用户成功");

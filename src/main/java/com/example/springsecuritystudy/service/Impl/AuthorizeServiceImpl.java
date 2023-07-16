@@ -1,5 +1,6 @@
 package com.example.springsecuritystudy.service.Impl;
 
+import com.example.springsecuritystudy.entity.Permission;
 import com.example.springsecuritystudy.entity.Role;
 import com.example.springsecuritystudy.repository.UserRepository;
 import com.example.springsecuritystudy.service.AuthorizeService;
@@ -37,11 +38,16 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         String[] roles = user.getRoles().stream()
                 .map(Role::getRName)
                 .toArray(String[]::new);
-        System.out.println("用户{" + user + "}登录成功, 权限:{" + Arrays.toString(roles) + "}");
+        String[] permissions = user.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getPName)
+                .toArray(String[]::new);
+
+        System.out.println("用户{" + user + "}登录成功, 角色:{" + Arrays.toString(roles) + "}" + "权限:{" + Arrays.toString(permissions) + "}");
         return User
                 .withUsername(username)
                 .password(encoder.encode(user.getPassword()))
-                .roles(roles)
+                .roles(permissions)
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import com.example.springsecuritystudy.entity.User;
 import com.example.springsecuritystudy.repository.UserRepository;
 import com.example.springsecuritystudy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public List<User> findAllAdmin() {
@@ -26,11 +30,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUserInfo(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.updateUserInfo(user.getNickname(), user.getPassword(), user.getUsername());
     }
 
     @Override
     public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

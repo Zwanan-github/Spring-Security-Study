@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,8 +18,6 @@ public class AuthorizeServiceImpl implements AuthorizeService {
 
     @Autowired
     UserRepository userRepository;
-
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     //多方默认懒加载, 在Service层加上@Transactional保持session
     @Transactional
@@ -46,7 +43,7 @@ public class AuthorizeServiceImpl implements AuthorizeService {
         System.out.println("用户{" + user + "}登录成功, 角色:{" + Arrays.toString(roles) + "}" + "权限:{" + Arrays.toString(permissions) + "}");
         return User
                 .withUsername(username)
-                .password(encoder.encode(user.getPassword()))
+                .password(user.getPassword())
                 .roles(permissions)
                 .build();
     }
